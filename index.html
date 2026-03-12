@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Never Let Go</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: auto;
+    }
+
+    body {
+      background: #f5f2eb;
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      color: #1a1a1a;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 40px;
+      mix-blend-mode: difference;
+    }
+
+    nav .logo {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+
+    nav .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    nav .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #fff;
+      text-decoration: none;
+      transition: opacity 0.3s;
+    }
+
+    nav .nav-links a:hover {
+      opacity: 0.6;
+    }
+
+    /* Spacer to allow scroll room before the text */
+    .scroll-spacer-top {
+      height: 20vh;
+    }
+
+    /* Hero text section */
+    .hero {
+      position: relative;
+      min-height: 300vh;
+    }
+
+    .hero-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .hero-text {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .hero-text .line {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(32px, 7vw, 100px);
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      transition: transform 0.1s linear, opacity 0.1s linear;
+      will-change: transform, opacity;
+    }
+
+    .hero-text .top-lines {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-text .bottom-lines {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Video container */
+    .video-container {
+      position: absolute;
+      z-index: 1;
+      border-radius: 8px;
+      overflow: hidden;
+      will-change: transform, width, height;
+      transition: border-radius 0.1s linear;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Content below */
+    .content-section {
+      position: relative;
+      z-index: 10;
+      background: #1a1a1a;
+      color: #f5f2eb;
+      min-height: 100vh;
+    }
+
+    .content-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 120px 40px;
+    }
+
+    .content-inner h2 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(28px, 4vw, 56px);
+      line-height: 1.1;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .content-inner p {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(16px, 1.8vw, 22px);
+      line-height: 1.6;
+      opacity: 0.7;
+      margin-bottom: 24px;
+    }
+
+    .content-inner .cta {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 16px 48px;
+      border: 2px solid #f5f2eb;
+      color: #f5f2eb;
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .content-inner .cta:hover {
+      background: #f5f2eb;
+      color: #1a1a1a;
+    }
+
+    /* Quote section */
+    .quote-section {
+      background: #f5f2eb;
+      color: #1a1a1a;
+      padding: 120px 40px;
+      text-align: center;
+    }
+
+    .quote-section blockquote {
+      max-width: 800px;
+      margin: 0 auto;
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: clamp(24px, 3.5vw, 48px);
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .quote-section cite {
+      display: block;
+      margin-top: 32px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-style: normal;
+      opacity: 0.5;
+    }
+
+    /* Footer */
+    footer {
+      background: #1a1a1a;
+      color: #f5f2eb;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    footer .footer-title {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+    }
+
+    footer .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      list-style: none;
+      margin-bottom: 40px;
+    }
+
+    footer .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 14px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #f5f2eb;
+      text-decoration: none;
+      opacity: 0.5;
+      transition: opacity 0.3s;
+    }
+
+    footer .footer-links a:hover {
+      opacity: 1;
+    }
+
+    footer .copyright {
+      font-family: 'Inter', sans-serif;
+      font-weight: 900;
+      font-size: 12px;
+      opacity: 0.3;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Never Let Go</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#watch">Watch</a></li>
+    </ul>
+  </nav>
+
+  <div class="scroll-spacer-top"></div>
+
+  <section class="hero">
+    <div class="hero-sticky">
+      <div class="hero-text">
+        <div class="top-lines">
+          <div class="line top-line">A supernatural</div>
+          <div class="line top-line">thriller about a</div>
+        </div>
+        <div class="bottom-lines">
+          <div class="line bottom-line">mother who will</div>
+          <div class="line bottom-line">never let go.</div>
+        </div>
+      </div>
+      <div class="video-container" id="videoContainer">
+        <video id="heroVideo" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" muted loop playsinline></video>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-section" id="about">
+    <div class="content-inner">
+      <h2>The evil is real. The bond is stronger.</h2>
+      <p>In a remote cabin in the woods, a mother and her twin sons are bound — literally — to their home by ropes that protect them from a malevolent presence lurking outside.</p>
+      <p>But when the boys begin to question whether the evil is real, the ties that bind them are tested in ways no family should endure.</p>
+      <a href="#watch" class="cta">Watch the trailer</a>
+    </div>
+  </section>
+
+  <section class="quote-section">
+    <blockquote>
+      "If you let go, you die."
+    </blockquote>
+    <cite>Never Let Go</cite>
+  </section>
+
+  <section class="content-section" id="watch">
+    <div class="content-inner">
+      <h2>Now streaming.</h2>
+      <p>Experience the terror. Never Let Go is available now.</p>
+      <a href="#" class="cta">Stream now</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-title">Never Let Go</div>
+    <ul class="footer-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#watch">Watch</a></li>
+    </ul>
+    <div class="copyright">&copy; 2024 Never Let Go. All rights reserved.</div>
+  </footer>
+
+  <script>
+    const hero = document.querySelector('.hero');
+    const videoContainer = document.getElementById('videoContainer');
+    const heroVideo = document.getElementById('heroVideo');
+    const topLines = document.querySelectorAll('.top-line');
+    const bottomLines = document.querySelectorAll('.bottom-line');
+
+    // Video dimensions
+    const VIDEO_START_WIDTH = 400;
+    const VIDEO_START_HEIGHT = 240;
+
+    let ticking = false;
+
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(updateHero);
+        ticking = true;
+      }
+    }
+
+    function updateHero() {
+      ticking = false;
+
+      const heroRect = hero.getBoundingClientRect();
+      const heroHeight = hero.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      const scrollableDistance = heroHeight - viewportHeight;
+
+      // How far we've scrolled through the hero section (0 to 1)
+      const scrolled = Math.max(0, -heroRect.top);
+      const progress = Math.min(1, Math.max(0, scrolled / scrollableDistance));
+
+      // Video scaling: start small, expand to full viewport
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      const startW = Math.min(VIDEO_START_WIDTH, vw * 0.35);
+      const startH = Math.min(VIDEO_START_HEIGHT, vh * 0.25);
+
+      const currentW = startW + (vw - startW) * progress;
+      const currentH = startH + (vh - startH) * progress;
+
+      videoContainer.style.width = currentW + 'px';
+      videoContainer.style.height = currentH + 'px';
+      videoContainer.style.left = (vw - currentW) / 2 + 'px';
+      videoContainer.style.top = (vh - currentH) / 2 + 'px';
+
+      // Border radius: 8px -> 0 as it goes fullscreen
+      const radius = 8 * (1 - progress);
+      videoContainer.style.borderRadius = radius + 'px';
+
+      // Text movement: top lines go up, bottom lines go down
+      const textOffset = progress * vh * 0.6;
+      const textOpacity = Math.max(0, 1 - progress * 2.5);
+
+      topLines.forEach((line, i) => {
+        const offset = textOffset * (1 + i * 0.15);
+        line.style.transform = `translateY(${-offset}px)`;
+        line.style.opacity = textOpacity;
+      });
+
+      bottomLines.forEach((line, i) => {
+        const offset = textOffset * (1 + i * 0.15);
+        line.style.transform = `translateY(${offset}px)`;
+        line.style.opacity = textOpacity;
+      });
+
+      // Start video playback once scrolling begins
+      if (progress > 0.02) {
+        heroVideo.play().catch(() => {});
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', updateHero);
+
+    // Initial state
+    updateHero();
+  </script>
+
+</body>
+</html>
