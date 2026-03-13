@@ -66,10 +66,10 @@
       opacity: 0; pointer-events: none;
     }
 
-    /* ── Section 2: Logline fades up, text splits, photo zooms ── */
+    /* ── Section 2: Logline fades up, text splits, photo zooms, overlay text ── */
     .logline-section {
       position: relative;
-      height: 350vh;
+      height: 500vh;
     }
     .logline-sticky {
       position: sticky; top: 0;
@@ -86,6 +86,10 @@
       transition: none;
       z-index: 3;
       position: relative;
+    }
+    .logline-top, .logline-bottom {
+      transition: none;
+      will-change: transform, opacity;
     }
     .logline-text p {
       font-family: 'Playfair Display', Georgia, serif;
@@ -123,44 +127,30 @@
       object-position: center;
     }
 
-    /* ── Section 4: Reunion — full image bg + text ── */
-    .reunion-section {
-      position: relative;
-      height: 200vh;
-    }
-    .reunion-sticky {
-      position: sticky; top: 0;
-      height: 100vh;
-      overflow: hidden;
-    }
-    .reunion-sticky img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center top;
-    }
-    .reunion-overlay {
+    /* Overlay text that appears over the fullscreen photo */
+    .logline-overlay {
       position: absolute; inset: 0;
+      z-index: 4;
+      display: flex; align-items: flex-end;
+      padding: 60px 40px;
       background: linear-gradient(
         to top,
-        rgba(10,10,10,0.9) 0%,
-        rgba(10,10,10,0.5) 40%,
-        rgba(10,10,10,0.2) 100%
+        rgba(10,10,10,0.85) 0%,
+        rgba(10,10,10,0.4) 50%,
+        rgba(10,10,10,0.1) 100%
       );
-    }
-    .reunion-text {
-      position: absolute;
-      bottom: 80px; left: 40px; right: 40px;
-      max-width: 600px;
       opacity: 0;
-      transform: translateY(30px);
     }
-    .reunion-text p {
+    .logline-overlay p {
+      max-width: 600px;
       font-family: 'Playfair Display', Georgia, serif;
       font-size: clamp(22px, 3vw, 36px);
       line-height: 1.45;
       color: #e8e4de;
+      transform: translateY(30px);
+      transition: none;
     }
-    .reunion-text p em {
+    .logline-overlay p em {
       font-style: italic;
       color: #c41e1e;
     }
@@ -291,24 +281,21 @@
     </div>
   </section>
 
-  <!-- 2. Logline fades up, text splits, photo zooms to fullscreen -->
+  <!-- 2. Logline fades up, text splits, photo zooms to fullscreen, overlay text -->
   <section class="logline-section" id="loglineSection">
     <div class="logline-sticky">
       <div class="logline-text" id="loglineText">
-        <p><strong>Never Let Go</strong> tells the extraordinary true story of Grant Williams, a man who spent 23 years in prison for a murder he did not commit — and the childhood bestfriend who never stopped believing in him: <span class="ghostface-reveal" id="ghostfaceReveal">Ghostface Killah of the Wu-Tang Clan.</span></p>
+        <div class="logline-top" id="loglineTop">
+          <p><strong>Never Let Go</strong> tells the extraordinary true story of Grant Williams, a man who spent 23 years in prison for a murder he did not commit —</p>
+        </div>
+        <div class="logline-bottom" id="loglineBottom">
+          <p>and the childhood bestfriend who never stopped believing in him: <span class="ghostface-reveal" id="ghostfaceReveal">Ghostface Killah of the Wu-Tang Clan.</span></p>
+        </div>
       </div>
       <div class="logline-photo" id="loglinePhoto">
         <img src="./Grant---Ghost1-1-1-1.webp" alt="Grant and Ghostface — young">
       </div>
-    </div>
-  </section>
-
-  <!-- 4. Reunion image + album text -->
-  <section class="reunion-section" id="reunionSection">
-    <div class="reunion-sticky">
-      <img src="./IMG_1851.jpg" alt="Grant and Ghostface — reunited">
-      <div class="reunion-overlay"></div>
-      <div class="reunion-text" id="reunionText">
+      <div class="logline-overlay" id="loglineOverlay">
         <p>Now free, Grant reunites with Ghost, and the two set out on a deeply personal mission: to turn Grant's life story into an <em>album.</em></p>
       </div>
     </div>
@@ -366,10 +353,11 @@
 
     const loglineSection = document.getElementById('loglineSection');
     const loglineText = document.getElementById('loglineText');
+    const loglineTop = document.getElementById('loglineTop');
+    const loglineBottom = document.getElementById('loglineBottom');
     const loglinePhoto = document.getElementById('loglinePhoto');
-
-    const reunionSection = document.getElementById('reunionSection');
-    const reunionText = document.getElementById('reunionText');
+    const loglineOverlay = document.getElementById('loglineOverlay');
+    const loglineOverlayP = loglineOverlay.querySelector('p');
 
     const closingText = document.getElementById('closingText');
     const ghostfaceReveal = document.getElementById('ghostfaceReveal');
@@ -403,37 +391,36 @@
       heroOverlay.style.opacity = heroP;
       navbar.classList.toggle('scrolled', heroP > 0.3);
 
-      // ── Logline: text fades up → Ghostface reveals → text splits → photo zooms fullscreen ──
+      // ── Logline: text fades up → Ghostface reveals → text splits → photo zooms → overlay text ──
       const logP = sectionProgress(loglineSection);
 
-      // Phase 1 (0–0.15): Text fades in
-      const textP = Math.min(1, logP / 0.15);
+      // Phase 1 (0–0.1): Text fades in
+      const textP = Math.min(1, logP / 0.1);
       const textEased = easeOutCubic(textP);
       loglineText.style.opacity = textEased;
       loglineText.style.transform = `translateY(${40 * (1 - textEased)}px)`;
 
-      // Phase 2 (0.12): Ghostface reveals with clip-path wipe
-      if (logP > 0.12) {
+      // Phase 2 (0.08): Ghostface reveals with subtle fade
+      if (logP > 0.08) {
         ghostfaceReveal.classList.add('shown');
       } else {
         ghostfaceReveal.classList.remove('shown');
       }
 
-      // Phase 3 (0.3–0.55): Text fades out and scales down as photo takes over
-      const fadeStart = 0.3;
-      const fadeEnd = 0.55;
-      const fadeP = Math.min(1, Math.max(0, (logP - fadeStart) / (fadeEnd - fadeStart)));
-      const fadeEased = easeOutCubic(fadeP);
+      // Phase 3 (0.2–0.4): Text splits — top goes up, bottom goes down
+      const splitStart = 0.2;
+      const splitEnd = 0.4;
+      const splitP = Math.min(1, Math.max(0, (logP - splitStart) / (splitEnd - splitStart)));
+      const splitEased = easeOutCubic(splitP);
 
-      if (logP > fadeStart) {
-        const textOpacity = Math.max(0, textEased * (1 - fadeEased));
-        loglineText.style.opacity = textOpacity;
-        loglineText.style.transform = `translateY(${40 * (1 - textEased)}px) scale(${1 - 0.05 * fadeEased})`;
-      }
+      loglineTop.style.transform = `translateY(${-150 * splitEased}px)`;
+      loglineTop.style.opacity = 1 - splitEased;
+      loglineBottom.style.transform = `translateY(${150 * splitEased}px)`;
+      loglineBottom.style.opacity = 1 - splitEased;
 
-      // Phase 4 (0.35–0.75): Photo appears small in center, zooms to fullscreen
-      const zoomStart = 0.35;
-      const zoomEnd = 0.75;
+      // Phase 4 (0.25–0.55): Photo appears small in center, zooms to fullscreen
+      const zoomStart = 0.25;
+      const zoomEnd = 0.55;
       const zoomP = Math.min(1, Math.max(0, (logP - zoomStart) / (zoomEnd - zoomStart)));
       const zoomEased = easeOutCubic(zoomP);
 
@@ -444,20 +431,15 @@
       loglinePhoto.style.borderRadius = `${borderR}px`;
       loglinePhoto.style.opacity = zoomP > 0 ? 1 : 0;
 
-      // Phase 5 (0.8–1.0): Photo fades to dark for transition to next section
-      if (logP > 0.8) {
-        const fadeP = (logP - 0.8) / 0.2;
-        loglinePhoto.style.filter = `brightness(${1 - fadeP * 0.7})`;
-      } else {
-        loglinePhoto.style.filter = 'brightness(1)';
-      }
+      // Phase 5 (0.6–0.8): Overlay text fades up over the fullscreen photo
+      const overlayStart = 0.6;
+      const overlayEnd = 0.8;
+      const overlayP = Math.min(1, Math.max(0, (logP - overlayStart) / (overlayEnd - overlayStart)));
+      const overlayEased = easeOutCubic(overlayP);
 
-      // ── Reunion: text fades up ──
-      const reunionP = sectionProgress(reunionSection);
-      const reunionTextP = Math.min(1, reunionP / 0.4);
-      const reunionEased = easeOutCubic(reunionTextP);
-      reunionText.style.opacity = reunionEased;
-      reunionText.style.transform = `translateY(${30 * (1 - reunionEased)}px)`;
+      loglineOverlay.style.opacity = overlayEased;
+      loglineOverlayP.style.transform = `translateY(${30 * (1 - overlayEased)}px)`;
+      loglineOverlayP.style.opacity = overlayEased;
 
       // ── Closing: fade up ──
       const closingRect = closingText.getBoundingClientRect();
