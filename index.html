@@ -104,17 +104,11 @@
       pointer-events: none;
     }
 
-    /* ── Story Section ── */
+    /* ── Story Section: Sticky text + scrolling images ── */
     .story {
       position: relative;
       z-index: 10;
       background: #0a0a0a;
-      padding: 120px 40px;
-    }
-
-    .story-inner {
-      max-width: 720px;
-      margin: 0 auto;
     }
 
     .story .label {
@@ -125,49 +119,121 @@
       text-transform: uppercase;
       color: #c41e1e;
       margin-bottom: 48px;
+      padding: 120px 40px 0;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .story-graf {
-      margin-bottom: 48px;
+    /* Each story pair: sticky text left, scrolling image right */
+    .story-pair {
+      display: flex;
+      position: relative;
+      min-height: 100vh;
     }
 
-    .story-graf p {
+    .story-pair .text-col {
+      flex: 1;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 40px 60px 40px 40px;
+      z-index: 2;
+    }
+
+    .story-pair .text-col .text-inner {
+      max-width: 480px;
+      margin-left: auto;
+    }
+
+    .story-pair .text-col p {
       font-family: 'Playfair Display', Georgia, serif;
       font-size: clamp(20px, 2.2vw, 28px);
       line-height: 1.6;
       color: #a8a49e;
     }
 
-    .story-graf p em {
+    .story-pair .text-col p em {
       font-style: italic;
       color: #c41e1e;
     }
 
-    .story-graf p strong {
+    .story-pair .text-col p strong {
       color: #e8e4de;
       font-weight: 700;
     }
 
-    .story-image {
-      margin: 64px 0;
+    .story-pair .image-col {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .story-pair .image-col .parallax-image {
+      height: 100vh;
       overflow: hidden;
+      position: relative;
     }
 
-    .story-image img {
+    .story-pair .image-col .parallax-image img {
       width: 100%;
-      height: auto;
-      display: block;
+      height: 120%;
+      object-fit: cover;
+      position: absolute;
+      top: -10%;
+      will-change: transform;
     }
 
-    .story-image .caption {
-      margin-top: 12px;
+    .story-pair .image-col .parallax-image .caption {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
       font-family: 'Inter', sans-serif;
       font-weight: 700;
       font-size: 11px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: #a8a49e;
+      color: #e8e4de;
       opacity: 0.5;
+      z-index: 2;
+    }
+
+    /* Closing text — full width centered */
+    .story-closing {
+      padding: 120px 40px;
+      text-align: center;
+    }
+
+    .story-closing p {
+      max-width: 700px;
+      margin: 0 auto;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(22px, 2.5vw, 32px);
+      line-height: 1.5;
+      color: #e8e4de;
+    }
+
+    /* Mobile: stack vertically */
+    @media (max-width: 768px) {
+      .story-pair {
+        flex-direction: column;
+      }
+
+      .story-pair .text-col {
+        position: relative;
+        height: auto;
+        padding: 80px 24px 40px;
+      }
+
+      .story-pair .text-col .text-inner {
+        margin-left: 0;
+      }
+
+      .story-pair .image-col .parallax-image {
+        height: 70vh;
+      }
     }
 
     /* ── Quote Section ── */
@@ -334,33 +400,44 @@
 
   <!-- Story -->
   <section class="story" id="story">
-    <div class="story-inner">
 
-      <div class="label fade-in">The Story</div>
+    <div class="label fade-in">The Story</div>
 
-      <div class="story-graf fade-in">
-        <p><strong>Never Let Go</strong> tells the extraordinary true story of <strong>Grant Williams</strong>, a man who spent 23 years in prison for a murder he did not commit — and the childhood friend who never stopped believing in him: <strong>Ghostface Killah</strong> of the Wu-Tang Clan.</p>
+    <!-- Pair 1: Intro text + old school photo -->
+    <div class="story-pair">
+      <div class="text-col">
+        <div class="text-inner fade-in">
+          <p><strong>Never Let Go</strong> tells the extraordinary true story of <strong>Grant Williams</strong>, a man who spent 23 years in prison for a murder he did not commit — and the childhood friend who never stopped believing in him: <strong>Ghostface Killah</strong> of the Wu-Tang Clan.</p>
+        </div>
       </div>
-
-      <div class="story-image fade-in">
-        <img src="./Grant---Ghost1-1-1-1.webp" alt="Grant and Ghostface — young">
-        <div class="caption">Grant & Ghostface, before the arrest</div>
+      <div class="image-col">
+        <div class="parallax-image">
+          <img src="./Grant---Ghost1-1-1-1.webp" alt="Grant and Ghostface — young" data-parallax>
+          <div class="caption">Before the arrest</div>
+        </div>
       </div>
-
-      <div class="story-graf fade-in">
-        <p>Now free, Grant reunites with Ghost, and the two set out on a deeply personal mission: to turn Grant's life story into an <em>album.</em></p>
-      </div>
-
-      <div class="story-image fade-in">
-        <img src="./IMG_1851.jpg" alt="Grant and Ghostface — reunited">
-        <div class="caption">Grant & Ghostface, reunited</div>
-      </div>
-
-      <div class="story-graf fade-in">
-        <p>The result is both a reckoning and a reclamation: an album born from the unbreakable bond between two brothers who refused to let go.</p>
-      </div>
-
     </div>
+
+    <!-- Pair 2: Album mission + reunion photo -->
+    <div class="story-pair">
+      <div class="text-col">
+        <div class="text-inner fade-in">
+          <p>Now free, Grant reunites with Ghost, and the two set out on a deeply personal mission: to turn Grant's life story into an <em>album.</em></p>
+        </div>
+      </div>
+      <div class="image-col">
+        <div class="parallax-image">
+          <img src="./IMG_1851.jpg" alt="Grant and Ghostface — reunited" data-parallax>
+          <div class="caption">Reunited</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Closing line -->
+    <div class="story-closing fade-in">
+      <p>The result is both a reckoning and a reclamation: an album born from the unbreakable bond between two brothers who refused to let go.</p>
+    </div>
+
   </section>
 
   <!-- Quote -->
@@ -435,6 +512,28 @@
       } else {
         navbar.classList.remove('scrolled');
       }
+
+      // Update parallax
+      updateParallax();
+    }
+
+    // ── Parallax on story images ──
+    const parallaxImages = document.querySelectorAll('[data-parallax]');
+
+    function updateParallax() {
+      parallaxImages.forEach(img => {
+        const container = img.parentElement;
+        const rect = container.getBoundingClientRect();
+        const vh = window.innerHeight;
+
+        // How far through the viewport this element is (0 = bottom, 1 = top)
+        const visible = (vh - rect.top) / (vh + rect.height);
+        const clamped = Math.min(1, Math.max(0, visible));
+
+        // Shift image vertically for parallax (-10% to +10%)
+        const offset = (clamped - 0.5) * 20;
+        img.style.transform = `translateY(${offset}%)`;
+      });
     }
 
     // ── Intersection Observer for fade-ins ──
