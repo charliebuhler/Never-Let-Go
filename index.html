@@ -111,54 +111,43 @@
       background: #0a0a0a;
     }
 
-    .story-intro {
+    .story-block {
+      padding: 100px 40px;
+    }
+
+    .story-block .text-inner {
       max-width: 800px;
       margin: 0 auto;
-      padding: 120px 40px;
     }
 
-    .story-intro .label {
-      font-family: 'Inter', sans-serif;
-      font-weight: 700;
-      font-size: 12px;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: #c41e1e;
-      margin-bottom: 32px;
-    }
-
-    .story-intro h2 {
+    .story-block h2 {
       font-family: 'Playfair Display', Georgia, serif;
       font-weight: 700;
-      font-size: clamp(28px, 4vw, 52px);
+      font-size: clamp(28px, 4.5vw, 56px);
       line-height: 1.2;
       color: #e8e4de;
-      margin-bottom: 32px;
     }
 
-    .story-intro h2 em {
+    .story-block h2 em {
       font-style: italic;
       color: #c41e1e;
     }
 
-    .divider {
-      width: 60px;
-      height: 2px;
-      background: #c41e1e;
-      margin: 32px 0;
+    .story-block h2 strong {
+      color: #c41e1e;
+      font-weight: 900;
     }
 
-    .story-intro p {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(16px, 1.6vw, 20px);
-      line-height: 1.8;
-      color: #a8a49e;
-      margin-bottom: 20px;
+    .story-image {
+      width: 100%;
+      overflow: hidden;
     }
 
-    .story-intro p strong {
-      color: #e8e4de;
-      font-weight: 700;
+    .story-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: grayscale(30%);
     }
 
     /* ── GIF / Image Section ── */
@@ -352,25 +341,45 @@
 
   <!-- Story -->
   <section class="story" id="story">
-    <div class="story-intro">
-      <div class="fade-in">
-        <div class="label">The Story</div>
-        <h2><em>Never Let Go</em> tells the extraordinary true story of Grant Williams, a man who spent 23 years in prison for a murder he did not commit — and the childhood bestfriend who never stopped believing in him: Ghostface Killah of the Wu-Tang Clan.</h2>
-        <div class="divider"></div>
-      </div>
-      <div class="fade-in">
-        <p>Now free, Grant reunites with Ghostface, and the two set out on a deeply personal mission: to turn Grant's life story into an <em><strong>album.</strong></em></p>
-      </div>
-      <div class="fade-in">
-        <p>Each track a chapter in their shared history — growing up broke but inseparable, the arrest that tore their lives apart, and Grant's long fight to make it back home.</p>
+
+    <div class="story-block fade-in">
+      <div class="text-inner">
+        <h2>Grant Williams lost nearly a quarter century of his life to a wrongful conviction.</h2>
       </div>
     </div>
-  </section>
 
-  <!-- GIF image -->
-  <section class="image-section fade-in">
-    <img src="./grant-williams.gif" alt="Grant Williams">
-    <div class="caption">Grant Williams</div>
+    <div class="story-image fade-in">
+      <img src="./grant-williams.gif" alt="Grant Williams">
+    </div>
+
+    <div class="story-block fade-in">
+      <div class="text-inner">
+        <h2>His childhood best friend never stopped believing in him.</h2>
+      </div>
+    </div>
+
+    <div class="story-block fade-in">
+      <div class="text-inner">
+        <h2><strong>Ghostface Killah</strong> — of the Wu-Tang Clan.</h2>
+      </div>
+    </div>
+
+    <div class="story-image fade-in">
+      <img src="./cover-art.png" alt="Never Let Go cover art">
+    </div>
+
+    <div class="story-block fade-in">
+      <div class="text-inner">
+        <h2>Now free, Grant reunites with Ghostface.</h2>
+      </div>
+    </div>
+
+    <div class="story-block fade-in">
+      <div class="text-inner">
+        <h2>Together they set out to turn Grant's life story into an <em>album.</em></h2>
+      </div>
+    </div>
+
   </section>
 
   <!-- Quote -->
