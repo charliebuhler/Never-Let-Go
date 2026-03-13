@@ -79,7 +79,7 @@
       overflow: hidden;
     }
     .logline-text {
-      max-width: 700px;
+      max-width: 560px;
       text-align: center;
       opacity: 0;
       transform: translateY(40px);
@@ -93,21 +93,19 @@
     }
     .logline-text p {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(22px, 3vw, 36px);
-      line-height: 1.45;
+      font-size: clamp(18px, 2.2vw, 28px);
+      line-height: 1.55;
       color: #e8e4de;
     }
     .logline-text p strong { font-weight: 700; }
     .ghostface-reveal {
       color: #c41e1e;
       font-weight: 900;
-      display: inline-block;
-      clip-path: inset(0 100% 0 0);
+      display: inline;
       opacity: 0;
-      transition: clip-path 1.4s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.6s ease;
+      transition: opacity 1.8s ease;
     }
     .ghostface-reveal.shown {
-      clip-path: inset(0 0% 0 0);
       opacity: 1;
     }
 
