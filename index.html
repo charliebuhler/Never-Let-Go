@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Never Let Go</title>
+  <title>Never Let Go — The Grant Williams Story</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;700;900&display=swap');
 
     * {
       margin: 0;
@@ -13,18 +13,13 @@
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: auto;
-    }
-
     body {
-      background: #f5f2eb;
-      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-      color: #1a1a1a;
+      background: #0a0a0a;
+      color: #e8e4de;
       overflow-x: hidden;
     }
 
-    /* Navigation */
+    /* ── Navigation ── */
     nav {
       position: fixed;
       top: 0;
@@ -35,16 +30,22 @@
       justify-content: space-between;
       align-items: center;
       padding: 24px 40px;
-      mix-blend-mode: difference;
+      transition: background 0.3s;
+    }
+
+    nav.scrolled {
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
     }
 
     nav .logo {
       font-family: 'Inter', sans-serif;
       font-weight: 900;
-      font-size: 18px;
-      letter-spacing: 0.05em;
+      font-size: 16px;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: #fff;
+      color: #e8e4de;
     }
 
     nav .nav-links {
@@ -55,28 +56,24 @@
 
     nav .nav-links a {
       font-family: 'Inter', sans-serif;
-      font-weight: 900;
-      font-size: 14px;
-      letter-spacing: 0.05em;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: #fff;
+      color: #e8e4de;
       text-decoration: none;
+      opacity: 0.6;
       transition: opacity 0.3s;
     }
 
     nav .nav-links a:hover {
-      opacity: 0.6;
+      opacity: 1;
     }
 
-    /* Spacer to allow scroll room before the text */
-    .scroll-spacer-top {
-      height: 20vh;
-    }
-
-    /* Hero text section */
+    /* ── Hero: Text on cream, scroll reveals image ── */
     .hero {
       position: relative;
-      min-height: 300vh;
+      height: 350vh;
     }
 
     .hero-sticky {
@@ -84,10 +81,10 @@
       top: 0;
       height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow: hidden;
+      background: #f5f2eb;
     }
 
     .hero-text {
@@ -100,321 +97,455 @@
     .hero-text .line {
       font-family: 'Inter', sans-serif;
       font-weight: 900;
-      font-size: clamp(32px, 7vw, 100px);
+      font-size: clamp(28px, 6.5vw, 96px);
       line-height: 1.05;
       text-transform: uppercase;
       letter-spacing: -0.02em;
-      transition: transform 0.1s linear, opacity 0.1s linear;
+      color: #1a1a1a;
       will-change: transform, opacity;
     }
 
-    .hero-text .top-lines {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
+    .hero-text .top-lines,
     .hero-text .bottom-lines {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    /* Video container */
-    .video-container {
+    /* Cover image container — starts small, grows to fullscreen */
+    .cover-container {
       position: absolute;
-      z-index: 1;
-      border-radius: 8px;
+      z-index: 3;
       overflow: hidden;
-      will-change: transform, width, height;
-      transition: border-radius 0.1s linear;
+      border-radius: 8px;
       opacity: 0;
+      will-change: transform, width, height;
     }
 
-    .video-container video {
+    .cover-container img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
 
-    /* Content below */
-    .content-section {
-      position: relative;
-      z-index: 10;
-      background: #1a1a1a;
-      color: #f5f2eb;
-      min-height: 100vh;
+    /* Dark overlay that fades in as image goes fullscreen */
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      background: #0a0a0a;
+      opacity: 0;
+      pointer-events: none;
     }
 
-    .content-inner {
-      max-width: 900px;
+    /* ── Story Section ── */
+    .story {
+      position: relative;
+      z-index: 10;
+      background: #0a0a0a;
+    }
+
+    .story-intro {
+      max-width: 800px;
       margin: 0 auto;
       padding: 120px 40px;
     }
 
-    .content-inner h2 {
+    .story-intro .label {
       font-family: 'Inter', sans-serif;
-      font-weight: 900;
-      font-size: clamp(28px, 4vw, 56px);
-      line-height: 1.1;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      margin-bottom: 40px;
+      color: #c41e1e;
+      margin-bottom: 32px;
     }
 
-    .content-inner p {
-      font-family: 'Inter', sans-serif;
-      font-weight: 900;
-      font-size: clamp(16px, 1.8vw, 22px);
-      line-height: 1.6;
-      opacity: 0.7;
-      margin-bottom: 24px;
+    .story-intro h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 52px);
+      line-height: 1.2;
+      color: #e8e4de;
+      margin-bottom: 32px;
     }
 
-    .content-inner .cta {
-      display: inline-block;
-      margin-top: 40px;
-      padding: 16px 48px;
-      border: 2px solid #f5f2eb;
-      color: #f5f2eb;
+    .story-intro h2 em {
+      font-style: italic;
+      color: #c41e1e;
+    }
+
+    .divider {
+      width: 60px;
+      height: 2px;
+      background: #c41e1e;
+      margin: 32px 0;
+    }
+
+    .story-intro p {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(16px, 1.6vw, 20px);
+      line-height: 1.8;
+      color: #a8a49e;
+      margin-bottom: 20px;
+    }
+
+    .story-intro p strong {
+      color: #e8e4de;
+      font-weight: 700;
+    }
+
+    /* ── GIF / Image Section ── */
+    .image-section {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .image-section img {
+      width: 100%;
+      height: auto;
+      display: block;
+      filter: grayscale(30%);
+    }
+
+    .image-section .caption {
+      position: absolute;
+      bottom: 40px;
+      right: 40px;
       font-family: 'Inter', sans-serif;
-      font-weight: 900;
-      font-size: 14px;
-      letter-spacing: 0.1em;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      text-decoration: none;
-      transition: background 0.3s, color 0.3s;
+      color: #e8e4de;
+      opacity: 0.5;
     }
 
-    .content-inner .cta:hover {
-      background: #f5f2eb;
-      color: #1a1a1a;
-    }
-
-    /* Quote section */
+    /* ── Quote Section ── */
     .quote-section {
-      background: #f5f2eb;
-      color: #1a1a1a;
       padding: 120px 40px;
       text-align: center;
+      background: #0a0a0a;
+      border-top: 1px solid rgba(232, 228, 222, 0.1);
+      border-bottom: 1px solid rgba(232, 228, 222, 0.1);
     }
 
     .quote-section blockquote {
-      max-width: 800px;
+      max-width: 700px;
       margin: 0 auto;
-      font-family: 'Inter', sans-serif;
-      font-weight: 900;
-      font-size: clamp(24px, 3.5vw, 48px);
-      line-height: 1.2;
-      text-transform: uppercase;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(24px, 3.5vw, 44px);
+      line-height: 1.3;
+      color: #e8e4de;
     }
 
-    .quote-section cite {
-      display: block;
+    .quote-section .attribution {
       margin-top: 32px;
       font-family: 'Inter', sans-serif;
-      font-weight: 900;
-      font-size: 14px;
-      letter-spacing: 0.1em;
+      font-weight: 700;
+      font-size: 12px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      font-style: normal;
-      opacity: 0.5;
+      color: #c41e1e;
     }
 
-    /* Footer */
-    footer {
-      background: #1a1a1a;
-      color: #f5f2eb;
-      padding: 60px 40px;
-      text-align: center;
+    /* ── Details Section ── */
+    .details {
+      background: #0a0a0a;
+      padding: 120px 40px;
     }
 
-    footer .footer-title {
-      font-family: 'Inter', sans-serif;
-      font-weight: 900;
-      font-size: 24px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 24px;
+    .details-inner {
+      max-width: 800px;
+      margin: 0 auto;
     }
 
-    footer .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 32px;
-      list-style: none;
+    .details h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: clamp(28px, 4vw, 48px);
+      line-height: 1.2;
+      color: #e8e4de;
       margin-bottom: 40px;
     }
 
-    footer .footer-links a {
+    .details p {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(16px, 1.6vw, 20px);
+      line-height: 1.8;
+      color: #a8a49e;
+      margin-bottom: 20px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      margin-top: 48px;
+      padding: 18px 56px;
+      background: #c41e1e;
+      color: #fff;
       font-family: 'Inter', sans-serif;
       font-weight: 900;
-      font-size: 14px;
-      letter-spacing: 0.05em;
+      font-size: 13px;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: #f5f2eb;
       text-decoration: none;
-      opacity: 0.5;
-      transition: opacity 0.3s;
+      transition: background 0.3s;
     }
 
-    footer .footer-links a:hover {
-      opacity: 1;
+    .cta-button:hover {
+      background: #a01818;
     }
 
-    footer .copyright {
+    /* ── Credits ── */
+    .credits {
+      background: #0a0a0a;
+      border-top: 1px solid rgba(232, 228, 222, 0.1);
+      padding: 80px 40px;
+    }
+
+    .credits-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .credits .credit-block h4 {
       font-family: 'Inter', sans-serif;
-      font-weight: 900;
-      font-size: 12px;
-      opacity: 0.3;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      color: #c41e1e;
+      margin-bottom: 8px;
+    }
+
+    .credits .credit-block p {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 16px;
+      color: #a8a49e;
+      line-height: 1.6;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: #0a0a0a;
+      padding: 40px;
+      text-align: center;
+      border-top: 1px solid rgba(232, 228, 222, 0.05);
+    }
+
+    footer p {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #e8e4de;
+      opacity: 0.2;
+    }
+
+    /* ── Fade-in animations ── */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
   </style>
 </head>
 <body>
 
-  <nav>
+  <nav id="navbar">
     <div class="logo">Never Let Go</div>
     <ul class="nav-links">
-      <li><a href="#about">About</a></li>
+      <li><a href="#story">Story</a></li>
       <li><a href="#watch">Watch</a></li>
     </ul>
   </nav>
 
-  <div class="scroll-spacer-top"></div>
-
+  <!-- Hero: cream background text + scroll-triggered cover art reveal -->
   <section class="hero">
     <div class="hero-sticky">
       <div class="hero-text">
         <div class="top-lines">
-          <div class="line top-line">A supernatural</div>
-          <div class="line top-line">thriller about a</div>
+          <div class="line top-line">A six-year</div>
+          <div class="line top-line">investigation</div>
         </div>
         <div class="bottom-lines">
-          <div class="line bottom-line">mother who will</div>
-          <div class="line bottom-line">never let go.</div>
+          <div class="line bottom-line">exposing a broken</div>
+          <div class="line bottom-line">justice system.</div>
         </div>
       </div>
-      <div class="video-container" id="videoContainer">
-        <video id="heroVideo" src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4" muted loop playsinline></video>
+      <div class="cover-container" id="coverContainer">
+        <img src="cover-art.png" alt="Never Let Go — Grant Williams mugshot cover art">
+      </div>
+      <div class="hero-overlay" id="heroOverlay"></div>
+    </div>
+  </section>
+
+  <!-- Story -->
+  <section class="story" id="story">
+    <div class="story-intro">
+      <div class="fade-in">
+        <div class="label">The Story</div>
+        <h2><em>Never Let Go</em> follows the extraordinary journey of Grant Williams, a man who spent 23 years in prison for a murder he didn't commit.</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="fade-in">
+        <p>Grant's case offers a window into a broken era of American justice. From NYPD detectives who rushed to close the case, to a DA's office incentivized to deliver convictions over truth, to the political climate of 1990s New York that treated young Black men as suspects before they were seen as people — every part of the system was stacked against him.</p>
+      </div>
+      <div class="fade-in">
+        <p><strong>But this isn't just about the past.</strong></p>
+        <p>It's about the life he's building now that he's finally free.</p>
       </div>
     </div>
   </section>
 
-  <section class="content-section" id="about">
-    <div class="content-inner">
-      <h2>The evil is real. The bond is stronger.</h2>
-      <p>In a remote cabin in the woods, a mother and her twin sons are bound — literally — to their home by ropes that protect them from a malevolent presence lurking outside.</p>
-      <p>But when the boys begin to question whether the evil is real, the ties that bind them are tested in ways no family should endure.</p>
-      <a href="#watch" class="cta">Watch the trailer</a>
+  <!-- GIF image -->
+  <section class="image-section fade-in">
+    <img src="grant-williams.gif" alt="Grant Williams">
+    <div class="caption">Grant Williams</div>
+  </section>
+
+  <!-- Quote -->
+  <section class="quote-section">
+    <div class="fade-in">
+      <blockquote>"23 years. No evidence. No justice. One man's fight to reclaim his life."</blockquote>
+      <div class="attribution">Never Let Go</div>
     </div>
   </section>
 
-  <section class="quote-section">
-    <blockquote>
-      "If you let go, you die."
-    </blockquote>
-    <cite>Never Let Go</cite>
+  <!-- Details -->
+  <section class="details" id="watch">
+    <div class="details-inner">
+      <div class="fade-in">
+        <h2>The truth doesn't expire.</h2>
+        <p>Never Let Go is a documentary that confronts wrongful conviction, systemic racism, and the resilience of the human spirit. Through interviews, archival footage, and Grant's own words, the film peels back the layers of a case that should have never been.</p>
+        <a href="#" class="cta-button">Watch Now</a>
+      </div>
+    </div>
   </section>
 
-  <section class="content-section" id="watch">
-    <div class="content-inner">
-      <h2>Now streaming.</h2>
-      <p>Experience the terror. Never Let Go is available now.</p>
-      <a href="#" class="cta">Stream now</a>
+  <!-- Credits -->
+  <section class="credits">
+    <div class="credits-inner">
+      <div class="credit-block fade-in">
+        <h4>Directed by</h4>
+        <p>Charlie Buhler</p>
+      </div>
+      <div class="credit-block fade-in">
+        <h4>Subject</h4>
+        <p>Grant Williams</p>
+      </div>
+      <div class="credit-block fade-in">
+        <h4>Runtime</h4>
+        <p>Feature Length</p>
+      </div>
     </div>
   </section>
 
   <footer>
-    <div class="footer-title">Never Let Go</div>
-    <ul class="footer-links">
-      <li><a href="#about">About</a></li>
-      <li><a href="#watch">Watch</a></li>
-    </ul>
-    <div class="copyright">&copy; 2024 Never Let Go. All rights reserved.</div>
+    <p>&copy; 2024 Never Let Go. All rights reserved.</p>
   </footer>
 
   <script>
+    // ── Scroll-triggered cover art zoom ──
     const hero = document.querySelector('.hero');
-    const videoContainer = document.getElementById('videoContainer');
-    const heroVideo = document.getElementById('heroVideo');
+    const coverContainer = document.getElementById('coverContainer');
+    const heroOverlay = document.getElementById('heroOverlay');
     const topLines = document.querySelectorAll('.top-line');
     const bottomLines = document.querySelectorAll('.bottom-line');
+    const navbar = document.getElementById('navbar');
 
-    // Video dimensions
-    const VIDEO_START_WIDTH = 400;
-    const VIDEO_START_HEIGHT = 240;
+    const START_W = 380;
+    const START_H = 230;
 
     let ticking = false;
 
     function onScroll() {
       if (!ticking) {
-        requestAnimationFrame(updateHero);
+        requestAnimationFrame(update);
         ticking = true;
       }
     }
 
-    function updateHero() {
+    function update() {
       ticking = false;
 
       const heroRect = hero.getBoundingClientRect();
-      const heroHeight = hero.offsetHeight;
-      const viewportHeight = window.innerHeight;
-      const scrollableDistance = heroHeight - viewportHeight;
-
-      // How far we've scrolled through the hero section (0 to 1)
+      const scrollableDistance = hero.offsetHeight - window.innerHeight;
       const scrolled = Math.max(0, -heroRect.top);
       const progress = Math.min(1, Math.max(0, scrolled / scrollableDistance));
 
-      // Video scaling: start small, expand to full viewport
       const vw = window.innerWidth;
       const vh = window.innerHeight;
 
-      const startW = Math.min(VIDEO_START_WIDTH, vw * 0.35);
-      const startH = Math.min(VIDEO_START_HEIGHT, vh * 0.25);
-
+      // Cover image: hidden at start, appears and scales to fullscreen
+      const startW = Math.min(START_W, vw * 0.35);
+      const startH = Math.min(START_H, vh * 0.25);
       const currentW = startW + (vw - startW) * progress;
       const currentH = startH + (vh - startH) * progress;
 
-      videoContainer.style.width = currentW + 'px';
-      videoContainer.style.height = currentH + 'px';
-      videoContainer.style.left = (vw - currentW) / 2 + 'px';
-      videoContainer.style.top = (vh - currentH) / 2 + 'px';
+      coverContainer.style.width = currentW + 'px';
+      coverContainer.style.height = currentH + 'px';
+      coverContainer.style.left = (vw - currentW) / 2 + 'px';
+      coverContainer.style.top = (vh - currentH) / 2 + 'px';
+      coverContainer.style.opacity = progress > 0.01 ? '1' : '0';
+      coverContainer.style.borderRadius = (8 * (1 - progress)) + 'px';
 
-      // Show video only once scrolling starts
-      videoContainer.style.opacity = progress > 0.01 ? '1' : '0';
-
-      // Border radius: 8px -> 0 as it goes fullscreen
-      const radius = 8 * (1 - progress);
-      videoContainer.style.borderRadius = radius + 'px';
-
-      // Text movement: top lines go up, bottom lines go down
+      // Text splits apart and fades
       const textOffset = progress * vh * 0.6;
       const textOpacity = Math.max(0, 1 - progress * 2.5);
 
       topLines.forEach((line, i) => {
-        const offset = textOffset * (1 + i * 0.15);
-        line.style.transform = `translateY(${-offset}px)`;
+        line.style.transform = `translateY(${-(textOffset * (1 + i * 0.15))}px)`;
         line.style.opacity = textOpacity;
       });
 
       bottomLines.forEach((line, i) => {
-        const offset = textOffset * (1 + i * 0.15);
-        line.style.transform = `translateY(${offset}px)`;
+        line.style.transform = `translateY(${textOffset * (1 + i * 0.15)}px)`;
         line.style.opacity = textOpacity;
       });
 
-      // Start video playback once scrolling begins
-      if (progress > 0.02) {
-        heroVideo.play().catch(() => {});
+      // Dark overlay fades in at the end of the scroll
+      const overlayProgress = Math.max(0, (progress - 0.7) / 0.3);
+      heroOverlay.style.opacity = overlayProgress;
+
+      // Navbar background
+      if (progress > 0.5) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
       }
     }
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', updateHero);
+    // ── Intersection Observer for fade-ins ──
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.15 });
 
-    // Initial state
-    updateHero();
+    fadeEls.forEach(el => observer.observe(el));
+
+    // ── Init ──
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', update);
+    update();
   </script>
 
 </body>
