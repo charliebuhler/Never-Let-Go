@@ -104,82 +104,70 @@
       pointer-events: none;
     }
 
-    /* ── Story: Sticky text + parallax images ── */
+    /* ── Story Section ── */
     .story {
       position: relative;
       z-index: 10;
       background: #0a0a0a;
+      padding: 120px 40px;
     }
 
-    /* Each story segment: image bg with sticky text overlay */
-    .story-segment {
-      position: relative;
-      min-height: 100vh;
-    }
-
-    /* Image-only segment */
-    .story-segment.has-image {
-      height: 160vh;
-    }
-
-    .story-segment .segment-bg {
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-    }
-
-    .story-segment .segment-bg img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(20%) brightness(0.4);
-    }
-
-    /* Sticky text that pins while image scrolls */
-    .story-segment .segment-text {
-      position: sticky;
-      top: 0;
-      z-index: 2;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 0 40px;
-    }
-
-    .story-segment .segment-text .text-inner {
-      max-width: 700px;
+    .story-inner {
+      max-width: 720px;
       margin: 0 auto;
     }
 
-    /* Text-only segment (no image) */
-    .story-segment.text-only {
-      display: flex;
-      align-items: center;
-      min-height: 80vh;
-      padding: 80px 40px;
-    }
-
-    .story-segment.text-only .text-inner {
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .story-segment h2 {
-      font-family: 'Playfair Display', Georgia, serif;
+    .story .label {
+      font-family: 'Inter', sans-serif;
       font-weight: 700;
-      font-size: clamp(28px, 4.5vw, 56px);
-      line-height: 1.2;
-      color: #e8e4de;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #c41e1e;
+      margin-bottom: 48px;
     }
 
-    .story-segment h2 em {
+    .story-graf {
+      margin-bottom: 48px;
+    }
+
+    .story-graf p {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(20px, 2.2vw, 28px);
+      line-height: 1.6;
+      color: #a8a49e;
+    }
+
+    .story-graf p em {
       font-style: italic;
       color: #c41e1e;
     }
 
-    .story-segment h2 strong {
-      color: #c41e1e;
-      font-weight: 900;
+    .story-graf p strong {
+      color: #e8e4de;
+      font-weight: 700;
+    }
+
+    .story-image {
+      margin: 64px 0;
+      overflow: hidden;
+    }
+
+    .story-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .story-image .caption {
+      margin-top: 12px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #a8a49e;
+      opacity: 0.5;
     }
 
     /* ── Quote Section ── */
@@ -346,57 +334,37 @@
 
   <!-- Story -->
   <section class="story" id="story">
+    <div class="story-inner">
 
-    <!-- 1. Wrongful conviction — over Grant's GIF -->
-    <div class="story-segment has-image">
-      <div class="segment-bg">
-        <img src="./grant-williams.gif" alt="Grant Williams">
-      </div>
-      <div class="segment-text">
-        <div class="text-inner fade-in">
-          <h2>Grant Williams lost nearly a quarter century of his life to a wrongful conviction.</h2>
-        </div>
-      </div>
-    </div>
+      <div class="label fade-in">The Story</div>
 
-    <!-- 2. Best friend — over old photo of Grant & Ghostface -->
-    <div class="story-segment has-image">
-      <div class="segment-bg">
+      <div class="story-graf fade-in">
+        <p><strong>Never Let Go</strong> tells the extraordinary true story of <strong>Grant Williams</strong>, a man who spent 23 years in prison for a murder he did not commit — and the childhood friend who never stopped believing in him: <strong>Ghostface Killah</strong> of the Wu-Tang Clan.</p>
+      </div>
+
+      <div class="story-image fade-in">
         <img src="./Grant---Ghost1-1-1-1.webp" alt="Grant and Ghostface — young">
+        <div class="caption">Grant & Ghostface, before the arrest</div>
       </div>
-      <div class="segment-text">
-        <div class="text-inner fade-in">
-          <h2>His childhood best friend never stopped believing in him.</h2>
-        </div>
-      </div>
-    </div>
 
-    <!-- 3. Ghostface Killah — text only -->
-    <div class="story-segment text-only">
-      <div class="text-inner fade-in">
-        <h2><strong>Ghostface Killah</strong> — of the Wu-Tang Clan.</h2>
+      <div class="story-graf fade-in">
+        <p>Now free, Grant reunites with Ghost, and the two set out on a deeply personal mission: to turn Grant's life story into an <em>album.</em></p>
       </div>
-    </div>
 
-    <!-- 4. Reunited — over recent photo -->
-    <div class="story-segment has-image">
-      <div class="segment-bg">
+      <div class="story-graf fade-in">
+        <p>Each song becomes a chapter in their shared history — growing up broke but inseparable, the arrest that tore their lives apart, and Grant's decades-long fight to make it back home.</p>
+      </div>
+
+      <div class="story-image fade-in">
         <img src="./IMG_1851.jpg" alt="Grant and Ghostface — reunited">
+        <div class="caption">Grant & Ghostface, reunited</div>
       </div>
-      <div class="segment-text">
-        <div class="text-inner fade-in">
-          <h2>Now free, Grant reunites with Ghostface.</h2>
-        </div>
-      </div>
-    </div>
 
-    <!-- 5. The album — text only -->
-    <div class="story-segment text-only">
-      <div class="text-inner fade-in">
-        <h2>Together they set out to turn Grant's life story into an <em>album.</em></h2>
+      <div class="story-graf fade-in">
+        <p>The result is both a reckoning and a reclamation: an album born from the unbreakable bond between two brothers who refused to let go.</p>
       </div>
-    </div>
 
+    </div>
   </section>
 
   <!-- Quote -->
