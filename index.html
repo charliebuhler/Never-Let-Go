@@ -70,7 +70,7 @@
     /* ── Section 2: Logline + photo rises and scrolls off ── */
     .logline-section {
       position: relative;
-      height: 400vh;
+      height: 350vh;
     }
     .logline-sticky {
       position: sticky; top: 0;
@@ -413,12 +413,10 @@
         ghostfaceReveal.classList.remove('shown');
       }
 
-      // Photo travels: starts below (100%), rises to center (0%), continues off top (-120%)
-      // Range: 0.2 to 0.9 of section progress
+      // Photo travels: starts below (100%), rises to center, continues off top (-120%)
       const photoStart = 0.2;
-      const photoEnd = 0.9;
+      const photoEnd = 0.8;
       const photoP = Math.min(1, Math.max(0, (logP - photoStart) / (photoEnd - photoStart)));
-      // Map 0-1 to 100% down → -120% up (passing through 0% at ~0.45 of photoP)
       const photoY = 100 - (220 * photoP);
       loglinePhoto.style.top = `${photoY}%`;
       loglinePhoto.style.transform = `translateX(-50%)`;
@@ -432,8 +430,8 @@
       // ── Reunion: photo zooms in → text 1 appears → text 2 appears ──
       const rP = sectionProgress(reunionSection);
 
-      // Photo zooms from small to fullscreen (0–0.35)
-      const zoomP = Math.min(1, rP / 0.35);
+      // Photo zooms from small to fullscreen immediately (0–0.25)
+      const zoomP = Math.min(1, rP / 0.25);
       const zoomEased = easeOutCubic(zoomP);
       const minScale = 0.2;
       const scale = minScale + (1 - minScale) * zoomEased;
@@ -442,18 +440,18 @@
       reunionPhoto.style.borderRadius = `${borderR}px`;
       reunionPhoto.style.opacity = zoomP > 0 ? 1 : 0;
 
-      // Dark overlay fades in (0.25–0.45)
-      const overlayP = Math.min(1, Math.max(0, (rP - 0.25) / 0.2));
+      // Dark overlay fades in (0.2–0.35)
+      const overlayP = Math.min(1, Math.max(0, (rP - 0.2) / 0.15));
       reunionOverlay.style.opacity = overlayP;
 
-      // Text 1 fades in (0.4–0.55)
-      const t1P = Math.min(1, Math.max(0, (rP - 0.4) / 0.15));
+      // Text 1 fades in (0.3–0.45)
+      const t1P = Math.min(1, Math.max(0, (rP - 0.3) / 0.15));
       const t1Eased = easeOutCubic(t1P);
       reunionP1.style.opacity = t1Eased;
       reunionP1.style.transform = `translateY(${24 * (1 - t1Eased)}px)`;
 
-      // Text 2 fades in (0.6–0.75)
-      const t2P = Math.min(1, Math.max(0, (rP - 0.6) / 0.15));
+      // Text 2 fades in (0.5–0.65)
+      const t2P = Math.min(1, Math.max(0, (rP - 0.5) / 0.15));
       const t2Eased = easeOutCubic(t2P);
       reunionP2.style.opacity = t2Eased;
       reunionP2.style.transform = `translateY(${24 * (1 - t2Eased)}px)`;
