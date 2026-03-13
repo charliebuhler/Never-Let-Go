@@ -66,10 +66,10 @@
       opacity: 0; pointer-events: none;
     }
 
-    /* ── Section 2: Logline fades up on black ── */
+    /* ── Section 2: Logline fades up, text splits, photo zooms ── */
     .logline-section {
       position: relative;
-      height: 250vh;
+      height: 350vh;
     }
     .logline-sticky {
       position: sticky; top: 0;
@@ -84,13 +84,12 @@
       opacity: 0;
       transform: translateY(40px);
       transition: none;
+      z-index: 3;
+      position: relative;
     }
-    .logline-text .label {
-      font-family: 'Inter', sans-serif;
-      font-weight: 700; font-size: 12px;
-      letter-spacing: 0.2em; text-transform: uppercase;
-      color: #c41e1e;
-      margin-bottom: 28px;
+    .logline-top, .logline-bottom {
+      transition: none;
+      will-change: transform, opacity;
     }
     .logline-text p {
       font-family: 'Playfair Display', Georgia, serif;
@@ -112,48 +111,22 @@
       opacity: 1;
     }
 
-    /* Photo that rises from bottom */
+    /* Photo zooms from center to fullscreen */
     .logline-photo {
       position: absolute;
-      bottom: 0; left: 50%;
-      transform: translateX(-50%) translateY(100%);
-      width: min(500px, 80vw);
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(0.15);
+      width: 100vw;
+      height: 100vh;
       z-index: 2;
-      border-radius: 4px;
+      border-radius: 24px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      opacity: 0;
     }
     .logline-photo img {
-      width: 100%; height: auto; display: block;
-    }
-
-    /* ── Section 3: Friendship reveal ── */
-    .friendship-section {
-      position: relative;
-      height: 200vh;
-    }
-    .friendship-sticky {
-      position: sticky; top: 0;
-      height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      padding: 40px;
-      overflow: hidden;
-    }
-    .friendship-text {
-      max-width: 600px;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    .friendship-text p {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(22px, 3vw, 36px);
-      line-height: 1.45;
-      color: #e8e4de;
-    }
-    .friendship-text p strong {
-      color: #c41e1e;
-      font-weight: 900;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
     }
 
     /* ── Section 4: Reunion — full image bg + text ── */
@@ -324,23 +297,19 @@
     </div>
   </section>
 
-  <!-- 2. Logline fades up, then photo rises from bottom -->
+  <!-- 2. Logline fades up, text splits, photo zooms to fullscreen -->
   <section class="logline-section" id="loglineSection">
     <div class="logline-sticky">
       <div class="logline-text" id="loglineText">
-        <p><strong>Never Let Go</strong> tells the extraordinary true story of Grant Williams, a man who spent 23 years in prison for a murder he did not commit — and the childhood friend who never stopped believing in him: <span class="ghostface-reveal" id="ghostfaceReveal">Ghostface Killah of the Wu-Tang Clan.</span></p>
+        <div class="logline-top" id="loglineTop">
+          <p><strong>Never Let Go</strong> tells the extraordinary true story of Grant Williams, a man who spent 23 years in prison for a murder he did not commit —</p>
+        </div>
+        <div class="logline-bottom" id="loglineBottom">
+          <p>and the childhood bestfriend who never stopped believing in him: <span class="ghostface-reveal" id="ghostfaceReveal">Ghostface Killah of the Wu-Tang Clan.</span></p>
+        </div>
       </div>
       <div class="logline-photo" id="loglinePhoto">
         <img src="./Grant---Ghost1-1-1-1.webp" alt="Grant and Ghostface — young">
-      </div>
-    </div>
-  </section>
-
-  <!-- 3. Friendship reveal -->
-  <section class="friendship-section" id="friendshipSection">
-    <div class="friendship-sticky">
-      <div class="friendship-text" id="friendshipText">
-        <p>And the childhood bestfriend who never stopped believing in him — <strong>Ghostface Killah</strong> of the Wu-Tang Clan.</p>
       </div>
     </div>
   </section>
@@ -408,10 +377,9 @@
 
     const loglineSection = document.getElementById('loglineSection');
     const loglineText = document.getElementById('loglineText');
+    const loglineTop = document.getElementById('loglineTop');
+    const loglineBottom = document.getElementById('loglineBottom');
     const loglinePhoto = document.getElementById('loglinePhoto');
-
-    const friendshipSection = document.getElementById('friendshipSection');
-    const friendshipText = document.getElementById('friendshipText');
 
     const reunionSection = document.getElementById('reunionSection');
     const reunionText = document.getElementById('reunionText');
@@ -448,42 +416,53 @@
       heroOverlay.style.opacity = heroP;
       navbar.classList.toggle('scrolled', heroP > 0.3);
 
-      // ── Logline: text fades up (0–0.3), photo rises (0.4–0.8) ──
+      // ── Logline: text fades up → Ghostface reveals → text splits → photo zooms fullscreen ──
       const logP = sectionProgress(loglineSection);
 
-      // Text fade in
-      const textP = Math.min(1, logP / 0.3);
+      // Phase 1 (0–0.15): Text fades in
+      const textP = Math.min(1, logP / 0.15);
       const textEased = easeOutCubic(textP);
       loglineText.style.opacity = textEased;
       loglineText.style.transform = `translateY(${40 * (1 - textEased)}px)`;
 
-      // Photo rises from bottom
-      const photoStart = 0.35;
-      const photoEnd = 0.75;
-      const photoP = Math.min(1, Math.max(0, (logP - photoStart) / (photoEnd - photoStart)));
-      const photoEased = easeOutCubic(photoP);
-      const photoY = 100 * (1 - photoEased);
-      loglinePhoto.style.transform = `translateX(-50%) translateY(${photoY}%)`;
-
-      // Ghostface name fades in red after logline appears
-      if (logP > 0.2) {
+      // Phase 2 (0.12): Ghostface reveals with clip-path wipe
+      if (logP > 0.12) {
         ghostfaceReveal.classList.add('shown');
       } else {
         ghostfaceReveal.classList.remove('shown');
       }
 
-      // Text fades as photo comes up
-      if (logP > 0.5) {
-        const fadeOut = Math.max(0, 1 - (logP - 0.5) / 0.3);
-        loglineText.style.opacity = fadeOut;
-      }
+      // Phase 3 (0.3–0.55): Text splits apart — top goes up, bottom goes down
+      const splitStart = 0.3;
+      const splitEnd = 0.55;
+      const splitP = Math.min(1, Math.max(0, (logP - splitStart) / (splitEnd - splitStart)));
+      const splitEased = easeOutCubic(splitP);
 
-      // ── Friendship: text fades up ──
-      const friendP = sectionProgress(friendshipSection);
-      const friendTextP = Math.min(1, friendP / 0.35);
-      const friendEased = easeOutCubic(friendTextP);
-      friendshipText.style.opacity = friendEased;
-      friendshipText.style.transform = `translateY(${30 * (1 - friendEased)}px)`;
+      loglineTop.style.transform = `translateY(${-120 * splitEased}px)`;
+      loglineTop.style.opacity = 1 - splitEased;
+      loglineBottom.style.transform = `translateY(${120 * splitEased}px)`;
+      loglineBottom.style.opacity = 1 - splitEased;
+
+      // Phase 4 (0.35–0.75): Photo appears small in center, zooms to fullscreen
+      const zoomStart = 0.35;
+      const zoomEnd = 0.75;
+      const zoomP = Math.min(1, Math.max(0, (logP - zoomStart) / (zoomEnd - zoomStart)));
+      const zoomEased = easeOutCubic(zoomP);
+
+      const minScale = 0.15;
+      const photoScale = minScale + (1 - minScale) * zoomEased;
+      const borderR = 24 * (1 - zoomEased);
+      loglinePhoto.style.transform = `translate(-50%, -50%) scale(${photoScale})`;
+      loglinePhoto.style.borderRadius = `${borderR}px`;
+      loglinePhoto.style.opacity = zoomP > 0 ? 1 : 0;
+
+      // Phase 5 (0.8–1.0): Photo fades to dark for transition to next section
+      if (logP > 0.8) {
+        const fadeP = (logP - 0.8) / 0.2;
+        loglinePhoto.style.filter = `brightness(${1 - fadeP * 0.7})`;
+      } else {
+        loglinePhoto.style.filter = 'brightness(1)';
+      }
 
       // ── Reunion: text fades up ──
       const reunionP = sectionProgress(reunionSection);
