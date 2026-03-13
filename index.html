@@ -125,22 +125,24 @@
       margin-right: auto;
     }
 
-    /* Each story pair: sticky text left, scrolling image right */
+    /* Each story pair: sticky text left, tall scrolling image right */
     .story-pair {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       position: relative;
-      min-height: 100vh;
     }
 
     .story-pair .text-col {
-      flex: 1;
+      position: relative;
+    }
+
+    .story-pair .text-col .text-sticky {
       position: sticky;
       top: 0;
       height: 100vh;
       display: flex;
       align-items: center;
       padding: 40px 60px 40px 40px;
-      z-index: 2;
     }
 
     .story-pair .text-col .text-inner {
@@ -166,9 +168,7 @@
     }
 
     .story-pair .image-col {
-      flex: 1;
       position: relative;
-      z-index: 1;
     }
 
     .story-pair .image-col .parallax-image {
@@ -218,10 +218,10 @@
     /* Mobile: stack vertically */
     @media (max-width: 768px) {
       .story-pair {
-        flex-direction: column;
+        grid-template-columns: 1fr;
       }
 
-      .story-pair .text-col {
+      .story-pair .text-col .text-sticky {
         position: relative;
         height: auto;
         padding: 80px 24px 40px;
@@ -403,14 +403,19 @@
 
     <div class="label fade-in">The Story</div>
 
-    <!-- Pair 1: Intro text + old school photo -->
+    <!-- Pair 1: Intro text sticks while images scroll -->
     <div class="story-pair">
       <div class="text-col">
-        <div class="text-inner fade-in">
-          <p><strong>Never Let Go</strong> tells the extraordinary true story of <strong>Grant Williams</strong>, a man who spent 23 years in prison for a murder he did not commit — and the childhood friend who never stopped believing in him: <strong>Ghostface Killah</strong> of the Wu-Tang Clan.</p>
+        <div class="text-sticky">
+          <div class="text-inner fade-in">
+            <p><strong>Never Let Go</strong> tells the extraordinary true story of <strong>Grant Williams</strong>, a man who spent 23 years in prison for a murder he did not commit — and the childhood friend who never stopped believing in him: <strong>Ghostface Killah</strong> of the Wu-Tang Clan.</p>
+          </div>
         </div>
       </div>
       <div class="image-col">
+        <div class="parallax-image">
+          <img src="./grant-williams.gif" alt="Grant Williams" data-parallax>
+        </div>
         <div class="parallax-image">
           <img src="./Grant---Ghost1-1-1-1.webp" alt="Grant and Ghostface — young" data-parallax>
           <div class="caption">Before the arrest</div>
@@ -418,17 +423,22 @@
       </div>
     </div>
 
-    <!-- Pair 2: Album mission + reunion photo -->
+    <!-- Pair 2: Album mission sticks while reunion photo scrolls -->
     <div class="story-pair">
       <div class="text-col">
-        <div class="text-inner fade-in">
-          <p>Now free, Grant reunites with Ghost, and the two set out on a deeply personal mission: to turn Grant's life story into an <em>album.</em></p>
+        <div class="text-sticky">
+          <div class="text-inner fade-in">
+            <p>Now free, Grant reunites with Ghost, and the two set out on a deeply personal mission: to turn Grant's life story into an <em>album.</em></p>
+          </div>
         </div>
       </div>
       <div class="image-col">
         <div class="parallax-image">
           <img src="./IMG_1851.jpg" alt="Grant and Ghostface — reunited" data-parallax>
           <div class="caption">Reunited</div>
+        </div>
+        <div class="parallax-image">
+          <img src="./cover-art.png" alt="Never Let Go cover art" data-parallax>
         </div>
       </div>
     </div>
