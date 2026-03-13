@@ -99,6 +99,15 @@
       color: #e8e4de;
     }
     .logline-text p strong { font-weight: 700; }
+    .ghostface-reveal {
+      color: #c41e1e;
+      font-weight: 900;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+    .ghostface-reveal.shown {
+      opacity: 1;
+    }
 
     /* Photo that rises from bottom */
     .logline-photo {
@@ -316,8 +325,7 @@
   <section class="logline-section" id="loglineSection">
     <div class="logline-sticky">
       <div class="logline-text" id="loglineText">
-        <div class="label">The Story</div>
-        <p><strong>Never Let Go</strong> tells the extraordinary true story of Grant Williams, a man who spent 23 years in prison for a murder he did not commit.</p>
+        <p><strong>Never Let Go</strong> tells the extraordinary true story of Grant Williams, a man who spent 23 years in prison for a murder he did not commit — and the childhood friend who never stopped believing in him: <span class="ghostface-reveal" id="ghostfaceReveal">Ghostface Killah of the Wu-Tang Clan.</span></p>
       </div>
       <div class="logline-photo" id="loglinePhoto">
         <img src="./Grant---Ghost1-1-1-1.webp" alt="Grant and Ghostface — young">
@@ -406,6 +414,7 @@
     const reunionText = document.getElementById('reunionText');
 
     const closingText = document.getElementById('closingText');
+    const ghostfaceReveal = document.getElementById('ghostfaceReveal');
 
     let ticking = false;
 
@@ -452,6 +461,13 @@
       const photoEased = easeOutCubic(photoP);
       const photoY = 100 * (1 - photoEased);
       loglinePhoto.style.transform = `translateX(-50%) translateY(${photoY}%)`;
+
+      // Ghostface name fades in red after logline appears
+      if (logP > 0.2) {
+        ghostfaceReveal.classList.add('shown');
+      } else {
+        ghostfaceReveal.classList.remove('shown');
+      }
 
       // Text fades as photo comes up
       if (logP > 0.5) {
