@@ -66,93 +66,75 @@
       opacity: 0; pointer-events: none;
     }
 
-    /* ── Section 2: Logline fades up, text splits, photo zooms, overlay text ── */
-    .logline-section {
+    /* ── Section 2: Story — sticky photo + scrolling text ── */
+    .story-section {
       position: relative;
-      height: 500vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      min-height: 100vh;
+      padding: 0;
     }
-    .logline-sticky {
-      position: sticky; top: 0;
+    .story-photo-col {
+      position: relative;
+      height: auto;
+    }
+    .story-photo-sticky {
+      position: sticky;
+      top: 0;
       height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      padding: 40px;
       overflow: hidden;
     }
-    .logline-text {
-      max-width: 560px;
-      text-align: center;
-      opacity: 0;
-      transform: translateY(40px);
-      transition: none;
-      z-index: 3;
-      position: relative;
-    }
-    .logline-top, .logline-bottom {
-      transition: none;
-      will-change: transform, opacity;
-    }
-    .logline-text p {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(18px, 2.2vw, 28px);
-      line-height: 1.55;
-      color: #e8e4de;
-    }
-    .logline-text p strong { font-weight: 700; }
-    .ghostface-reveal {
-      color: #c41e1e;
-      font-weight: 900;
-      display: inline;
-      opacity: 0;
-      transition: opacity 1.8s ease;
-    }
-    .ghostface-reveal.shown {
-      opacity: 1;
-    }
-
-    /* Photo zooms from center to fullscreen */
-    .logline-photo {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%) scale(0.15);
-      width: 100vw;
-      height: 100vh;
-      z-index: 2;
-      border-radius: 24px;
-      overflow: hidden;
-      opacity: 0;
-    }
-    .logline-photo img {
+    .story-photo-sticky img {
       width: 100%; height: 100%;
       object-fit: cover;
       object-position: center;
     }
-
-    /* Overlay text that appears over the fullscreen photo */
-    .logline-overlay {
-      position: absolute; inset: 0;
-      z-index: 4;
-      display: flex; align-items: flex-end;
-      padding: 60px 40px;
-      background: linear-gradient(
-        to top,
-        rgba(10,10,10,0.85) 0%,
-        rgba(10,10,10,0.4) 50%,
-        rgba(10,10,10,0.1) 100%
-      );
-      opacity: 0;
+    .story-text-col {
+      padding: 160px 60px 160px 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
-    .logline-overlay p {
-      max-width: 600px;
+    .story-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700; font-size: 11px;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: #c41e1e;
+      margin-bottom: 32px;
+    }
+    .story-text-col p {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(22px, 3vw, 36px);
-      line-height: 1.45;
+      font-size: clamp(18px, 2vw, 26px);
+      line-height: 1.6;
       color: #e8e4de;
-      transform: translateY(30px);
-      transition: none;
+      margin-bottom: 28px;
     }
-    .logline-overlay p em {
+    .story-text-col p:last-child { margin-bottom: 0; }
+    .story-text-col p strong { font-weight: 700; }
+    .story-text-col p em {
       font-style: italic;
       color: #c41e1e;
+    }
+    .story-text-col .ghostface-name {
+      color: #c41e1e;
+      font-weight: 900;
+    }
+
+    @media (max-width: 768px) {
+      .story-section {
+        grid-template-columns: 1fr;
+      }
+      .story-photo-col {
+        height: 60vh;
+      }
+      .story-photo-sticky {
+        position: relative;
+        height: 100%;
+      }
+      .story-text-col {
+        padding: 60px 24px;
+      }
     }
 
     /* ── Closing statement ── */
@@ -281,23 +263,17 @@
     </div>
   </section>
 
-  <!-- 2. Logline fades up, text splits, photo zooms to fullscreen, overlay text -->
-  <section class="logline-section" id="loglineSection">
-    <div class="logline-sticky">
-      <div class="logline-text" id="loglineText">
-        <div class="logline-top" id="loglineTop">
-          <p><strong>Never Let Go</strong> tells the extraordinary true story of Grant Williams, a man who spent 23 years in prison for a murder he did not commit —</p>
-        </div>
-        <div class="logline-bottom" id="loglineBottom">
-          <p>and the childhood bestfriend who never stopped believing in him: <span class="ghostface-reveal" id="ghostfaceReveal">Ghostface Killah of the Wu-Tang Clan.</span></p>
-        </div>
-      </div>
-      <div class="logline-photo" id="loglinePhoto">
+  <!-- 2. Story — sticky photo + scrolling text -->
+  <section class="story-section" id="storySection">
+    <div class="story-photo-col">
+      <div class="story-photo-sticky">
         <img src="./Grant---Ghost1-1-1-1.webp" alt="Grant and Ghostface — young">
       </div>
-      <div class="logline-overlay" id="loglineOverlay">
-        <p>Now free, Grant reunites with Ghost, and the two set out on a deeply personal mission: to turn Grant's life story into an <em>album.</em></p>
-      </div>
+    </div>
+    <div class="story-text-col">
+      <div class="story-label">The Story</div>
+      <p><strong>Never Let Go</strong> tells the extraordinary true story of Grant Williams, a man who spent 23 years in prison for a murder he did not commit — and the childhood bestfriend who never stopped believing in him: <span class="ghostface-name">Ghostface Killah of the Wu-Tang Clan.</span></p>
+      <p>Now free, Grant reunites with Ghost, and the two set out on a deeply personal mission: to turn Grant's life story into an <em>album.</em></p>
     </div>
   </section>
 
@@ -351,16 +327,7 @@
     const heroOverlay = document.getElementById('heroOverlay');
     const navbar = document.getElementById('navbar');
 
-    const loglineSection = document.getElementById('loglineSection');
-    const loglineText = document.getElementById('loglineText');
-    const loglineTop = document.getElementById('loglineTop');
-    const loglineBottom = document.getElementById('loglineBottom');
-    const loglinePhoto = document.getElementById('loglinePhoto');
-    const loglineOverlay = document.getElementById('loglineOverlay');
-    const loglineOverlayP = loglineOverlay.querySelector('p');
-
     const closingText = document.getElementById('closingText');
-    const ghostfaceReveal = document.getElementById('ghostfaceReveal');
 
     let ticking = false;
 
@@ -390,56 +357,6 @@
       const heroP = sectionProgress(hero);
       heroOverlay.style.opacity = heroP;
       navbar.classList.toggle('scrolled', heroP > 0.3);
-
-      // ── Logline: text fades up → Ghostface reveals → text splits → photo zooms → overlay text ──
-      const logP = sectionProgress(loglineSection);
-
-      // Phase 1 (0–0.1): Text fades in
-      const textP = Math.min(1, logP / 0.1);
-      const textEased = easeOutCubic(textP);
-      loglineText.style.opacity = textEased;
-      loglineText.style.transform = `translateY(${40 * (1 - textEased)}px)`;
-
-      // Phase 2 (0.08): Ghostface reveals with subtle fade
-      if (logP > 0.08) {
-        ghostfaceReveal.classList.add('shown');
-      } else {
-        ghostfaceReveal.classList.remove('shown');
-      }
-
-      // Phase 3 (0.2–0.4): Text splits — top goes up, bottom goes down
-      const splitStart = 0.2;
-      const splitEnd = 0.4;
-      const splitP = Math.min(1, Math.max(0, (logP - splitStart) / (splitEnd - splitStart)));
-      const splitEased = easeOutCubic(splitP);
-
-      loglineTop.style.transform = `translateY(${-150 * splitEased}px)`;
-      loglineTop.style.opacity = 1 - splitEased;
-      loglineBottom.style.transform = `translateY(${150 * splitEased}px)`;
-      loglineBottom.style.opacity = 1 - splitEased;
-
-      // Phase 4 (0.25–0.55): Photo appears small in center, zooms to fullscreen
-      const zoomStart = 0.25;
-      const zoomEnd = 0.55;
-      const zoomP = Math.min(1, Math.max(0, (logP - zoomStart) / (zoomEnd - zoomStart)));
-      const zoomEased = easeOutCubic(zoomP);
-
-      const minScale = 0.15;
-      const photoScale = minScale + (1 - minScale) * zoomEased;
-      const borderR = 24 * (1 - zoomEased);
-      loglinePhoto.style.transform = `translate(-50%, -50%) scale(${photoScale})`;
-      loglinePhoto.style.borderRadius = `${borderR}px`;
-      loglinePhoto.style.opacity = zoomP > 0 ? 1 : 0;
-
-      // Phase 5 (0.6–0.8): Overlay text fades up over the fullscreen photo
-      const overlayStart = 0.6;
-      const overlayEnd = 0.8;
-      const overlayP = Math.min(1, Math.max(0, (logP - overlayStart) / (overlayEnd - overlayStart)));
-      const overlayEased = easeOutCubic(overlayP);
-
-      loglineOverlay.style.opacity = overlayEased;
-      loglineOverlayP.style.transform = `translateY(${30 * (1 - overlayEased)}px)`;
-      loglineOverlayP.style.opacity = overlayEased;
 
       // ── Closing: fade up ──
       const closingRect = closingText.getBoundingClientRect();
