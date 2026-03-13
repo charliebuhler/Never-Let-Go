@@ -66,75 +66,61 @@
       opacity: 0; pointer-events: none;
     }
 
-    /* ── Section 2: Story — sticky photo + scrolling text ── */
-    .story-section {
+    /* ── Section 2: Logline + photo rises ── */
+    .logline-section {
       position: relative;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0;
-      min-height: 100vh;
-      padding: 0;
+      height: 300vh;
     }
-    .story-photo-col {
-      position: relative;
-      height: auto;
-    }
-    .story-photo-sticky {
-      position: sticky;
-      top: 0;
+    .logline-sticky {
+      position: sticky; top: 0;
       height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 40px;
       overflow: hidden;
     }
-    .story-photo-sticky img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center;
+    .logline-text {
+      max-width: 560px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(40px);
+      z-index: 3;
+      position: relative;
     }
-    .story-text-col {
-      padding: 160px 60px 160px 60px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .story-label {
+    .logline-label {
       font-family: 'Inter', sans-serif;
       font-weight: 700; font-size: 11px;
       letter-spacing: 0.2em; text-transform: uppercase;
       color: #c41e1e;
-      margin-bottom: 32px;
-    }
-    .story-text-col p {
-      font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(18px, 2vw, 26px);
-      line-height: 1.6;
-      color: #e8e4de;
       margin-bottom: 28px;
     }
-    .story-text-col p:last-child { margin-bottom: 0; }
-    .story-text-col p strong { font-weight: 700; }
-    .story-text-col p em {
-      font-style: italic;
-      color: #c41e1e;
+    .logline-text p {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(18px, 2.2vw, 28px);
+      line-height: 1.55;
+      color: #e8e4de;
     }
-    .story-text-col .ghostface-name {
+    .logline-text p strong { font-weight: 700; }
+    .ghostface-reveal {
       color: #c41e1e;
       font-weight: 900;
+      display: inline;
+      opacity: 0;
+      transition: opacity 1.8s ease;
     }
-
-    @media (max-width: 768px) {
-      .story-section {
-        grid-template-columns: 1fr;
-      }
-      .story-photo-col {
-        height: 60vh;
-      }
-      .story-photo-sticky {
-        position: relative;
-        height: 100%;
-      }
-      .story-text-col {
-        padding: 60px 24px;
-      }
+    .ghostface-reveal.shown {
+      opacity: 1;
+    }
+    .logline-photo {
+      position: absolute;
+      bottom: 0; left: 50%;
+      transform: translateX(-50%) translateY(100%);
+      z-index: 1;
+      max-width: 500px;
+      width: 80vw;
+    }
+    .logline-photo img {
+      width: 100%; height: auto;
+      display: block;
     }
 
     /* ── Closing statement ── */
@@ -263,17 +249,16 @@
     </div>
   </section>
 
-  <!-- 2. Story — sticky photo + scrolling text -->
-  <section class="story-section" id="storySection">
-    <div class="story-photo-col">
-      <div class="story-photo-sticky">
+  <!-- 2. Logline + photo rises -->
+  <section class="logline-section" id="loglineSection">
+    <div class="logline-sticky">
+      <div class="logline-text" id="loglineText">
+        <div class="logline-label">The Story</div>
+        <p><strong>Never Let Go</strong> tells the extraordinary true story of Grant Williams, a man who spent 23 years in prison for a murder he did not commit — and the childhood bestfriend who never stopped believing in him: <span class="ghostface-reveal" id="ghostfaceReveal">Ghostface Killah of the Wu-Tang Clan.</span></p>
+      </div>
+      <div class="logline-photo" id="loglinePhoto">
         <img src="./Grant---Ghost1-1-1-1.webp" alt="Grant and Ghostface — young">
       </div>
-    </div>
-    <div class="story-text-col">
-      <div class="story-label">The Story</div>
-      <p><strong>Never Let Go</strong> tells the extraordinary true story of Grant Williams, a man who spent 23 years in prison for a murder he did not commit — and the childhood bestfriend who never stopped believing in him: <span class="ghostface-name">Ghostface Killah of the Wu-Tang Clan.</span></p>
-      <p>Now free, Grant reunites with Ghost, and the two set out on a deeply personal mission: to turn Grant's life story into an <em>album.</em></p>
     </div>
   </section>
 
@@ -327,6 +312,10 @@
     const heroOverlay = document.getElementById('heroOverlay');
     const navbar = document.getElementById('navbar');
 
+    const loglineSection = document.getElementById('loglineSection');
+    const loglineText = document.getElementById('loglineText');
+    const loglinePhoto = document.getElementById('loglinePhoto');
+    const ghostfaceReveal = document.getElementById('ghostfaceReveal');
     const closingText = document.getElementById('closingText');
 
     let ticking = false;
@@ -357,6 +346,36 @@
       const heroP = sectionProgress(hero);
       heroOverlay.style.opacity = heroP;
       navbar.classList.toggle('scrolled', heroP > 0.3);
+
+      // ── Logline: text fades in → Ghostface reveals → photo rises from bottom ──
+      const logP = sectionProgress(loglineSection);
+
+      // Text fades in (0–0.15)
+      const textP = Math.min(1, logP / 0.15);
+      const textEased = easeOutCubic(textP);
+      loglineText.style.opacity = textEased;
+      loglineText.style.transform = `translateY(${40 * (1 - textEased)}px)`;
+
+      // Ghostface name fades in (0.12)
+      if (logP > 0.12) {
+        ghostfaceReveal.classList.add('shown');
+      } else {
+        ghostfaceReveal.classList.remove('shown');
+      }
+
+      // Photo rises from bottom (0.3–0.7)
+      const photoStart = 0.3;
+      const photoEnd = 0.7;
+      const photoP = Math.min(1, Math.max(0, (logP - photoStart) / (photoEnd - photoStart)));
+      const photoEased = easeOutCubic(photoP);
+      const photoY = 100 * (1 - photoEased);
+      loglinePhoto.style.transform = `translateX(-50%) translateY(${photoY}%)`;
+
+      // Text fades out as photo comes up (0.5–0.8)
+      if (logP > 0.5) {
+        const fadeOut = Math.max(0, 1 - (logP - 0.5) / 0.3);
+        loglineText.style.opacity = fadeOut;
+      }
 
       // ── Closing: fade up ──
       const closingRect = closingText.getBoundingClientRect();
